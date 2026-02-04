@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNS Consultoria Global | Sovereign Engineering</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyan: { DEFAULT: '#06b6d4', bright: '#00e5ff', glow: 'rgba(0, 229, 255, 0.6)' },
+                        neon: { green: '#00ff88', dark: '#00cc6a' },
+                        dark: { bg: '#020202', surface: '#0a0a0a', border: '#1a1a1a' },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-100%)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        body { background-color: #020202; color: #ffffff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        .text-outline { color: transparent; -webkit-text-stroke: 1.2px #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .text-gradient-hero { background: linear-gradient(135deg, #FFFFFF 0%, #00e5ff 50%, #06b6d4 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.25)); animation: gradient-move 5s ease infinite; }
+        @keyframes gradient-move { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .badge-shimmer { position: relative; overflow: hidden; }
+        .badge-shimmer::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.4), transparent); animation: shimmer 3s infinite; }
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+        .bg-grid { position: absolute; inset: 0; pointer-events: none; z-index: 0; background-size: 60px 60px; background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px), linear-gradient(to bottom, #1a1a1a 1px, transparent 1px); mask-image: radial-gradient(circle at 50% 30%, black 20%, transparent 100%); opacity: 0.15; }
+        .tech-card { background: #080808; border: 1px solid #1f1f1f; transition: all 0.3s ease; }
+        .tech-card:hover { border-color: #00e5ff; transform: translateY(-5px); box-shadow: 0 10px 40px -10px rgba(0, 229, 255, 0.1); }
+        .play-pulse { animation: playPulse 2s infinite; }
+        @keyframes playPulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00ff88; }
+    </style>
+</head>
+
+<body class="antialiased font-sans" x-data="appData()">
+    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-black/90 backdrop-blur-xl h-20 flex items-center transition-all">
+        <div class="max-w-[1400px] mx-auto px-8 w-full flex justify-between items-center">
+            <a href="#" class="font-display font-black text-xl md:text-2xl tracking-[0.1em] group text-white">
+                KNS <span class="text-cyan-bright group-hover:text-neon-green transition-colors">CONSULTORIA GLOBAL</span>
+            </a>
+            <div class="hidden md:flex items-center gap-10 font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400">
+                <a href="#services" class="hover:text-white hover:text-cyan-bright transition-colors" x-text="texts[lang].nav_sol"></a>
+                <a href="#about" class="hover:text-white hover:text-cyan-bright transition-colors" x-text="texts[lang].nav_about"></a>
+                <a href="#contact" class="hover:text-white hover:text-cyan-bright transition-colors" x-text="texts[lang].nav_contact"></a>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex border border-white/10 rounded font-bold text-[10px] uppercase overflow-hidden">
+                    <button @click="lang = 'pt'" :class="lang === 'pt' ? 'bg-cyan-900/40 text-cyan-bright' : 'text-gray-500 hover:bg-white/5'" class="px-3 py-1.5 transition-colors">PT</button>
+                    <button @click="lang = 'en'" :class="lang === 'en' ? 'bg-cyan-900/40 text-cyan-bright' : 'text-gray-500 hover:bg-white/5'" class="px-3 py-1.5 transition-colors">EN</button>
+                    <button @click="lang = 'es'" :class="lang === 'es' ? 'bg-cyan-900/40 text-cyan-bright' : 'text-gray-500 hover:bg-white/5'" class="px-3 py-1.5 transition-colors">ES</button>
+                </div>
+                <a href="#contact" class="hidden md:flex bg-cyan-bright text-black font-black uppercase tracking-wider px-6 py-2.5 rounded text-[10px] hover:bg-white transition-colors shadow-[0_0_15px_rgba(0,229,255,0.4)]" x-text="texts[lang].nav_cta"></a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-20 flex flex-col items-center justify-center text-center px-4 min-h-screen">
+        <div class="bg-grid"></div>
+        <div class="badge-shimmer relative z-10 mb-8 px-5 py-1.5 rounded-full border border-neon-green/30 bg-neon-green/5 text-neon-green font-mono text-[10px] uppercase tracking-[0.25em] font-bold animate-fade-in-up shadow-[0_0_20px_rgba(0,255,136,0.15)]" x-text="texts[lang].hero_badge"></div>
+        <h1 class="relative z-10 font-display font-black text-5xl md:text-7xl lg:text-[5.5rem] leading-[0.9] mb-8 tracking-tighter animate-fade-in-up" style="animation-delay: 0.1s;">
+            <span class="text-outline block mb-2 tracking-wide" x-text="texts[lang].hero_t1"></span>
+            <span class="text-gradient-hero block" x-text="texts[lang].hero_t2"></span>
+        </h1>
+        <p class="relative z-10 max-w-2xl text-base md:text-lg text-gray-400 font-medium mb-10 leading-relaxed animate-fade-in-up" style="animation-delay: 0.2s;" x-html="texts[lang].hero_desc"></p>
+        <a href="#contact" class="relative z-10 group px-8 py-3.5 bg-transparent border border-cyan-bright text-cyan-bright font-black uppercase tracking-[0.15em] rounded-full hover:bg-cyan-bright hover:text-black transition-all duration-300 animate-fade-in-up shadow-[0_0_20px_rgba(0,229,255,0.2)]" style="animation-delay: 0.3s;">
+            <span class="flex items-center gap-3 text-xs"><i class="fa-solid fa-power-off text-sm"></i> <span x-text="texts[lang].hero_btn"></span></span>
+        </a>
+    </section>
+
+    <div class="w-full border-y border-white/10 bg-[#050505] py-12 relative z-20">
+        <div class="max-w-[1400px] mx-auto px-8 grid md:grid-cols-2 items-center gap-10">
+            <div>
+                <div class="flex items-center gap-3 mb-2"><span class="text-neon-green font-mono text-xs font-bold tracking-widest" x-text="texts[lang].p9_tag"></span></div>
+                <h3 class="font-display font-black text-3xl text-white mb-4 uppercase" x-text="texts[lang].p9_title"></h3>
+                <p class="text-gray-400 text-sm leading-relaxed max-w-md" x-html="texts[lang].p9_desc"></p>
+            </div>
+            <div class="flex md:justify-end">
+                <button @click="videoOpen = true" class="group flex items-center gap-4 bg-white/5 border border-white/10 p-4 pr-8 rounded-full hover:border-neon-green hover:bg-white/10 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-neon-green flex items-center justify-center text-black play-pulse"><i class="fa-solid fa-play ml-1"></i></div>
+                    <div class="text-left"><div class="font-bold text-white text-sm" x-text="texts[lang].p9_btn_watch"></div><div class="font-mono text-[10px] text-gray-500 uppercase" x-text="texts[lang].p9_btn_sub"></div></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full border-b border-white/5 bg-[#020202] py-5 relative z-10 overflow-hidden">
+        <div class="flex whitespace-nowrap animate-marquee gap-24 font-mono text-xs font-bold text-gray-600 uppercase tracking-widest">
+            <span class="flex items-center gap-3"><i class="fa-brands fa-aws text-[#FF9900]"></i> AWS Cloud</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-[#00FF88]"></i> Protocolo 09</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-network-wired text-[#00E5FF]"></i> BGP Expert</span>
+            <span class="flex items-center gap-3"><i class="fa-brands fa-python text-[#3776AB]"></i> Python</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-server text-[#CC0000]"></i> Zabbix</span>
+            <span class="flex items-center gap-3"><i class="fa-brands fa-aws text-[#FF9900]"></i> AWS Cloud</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-[#00FF88]"></i> Protocolo 09</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-network-wired text-[#00E5FF]"></i> BGP Expert</span>
+            <span class="flex items-center gap-3"><i class="fa-brands fa-python text-[#3776AB]"></i> Python</span>
+            <span class="flex items-center gap-3"><i class="fa-solid fa-server text-[#CC0000]"></i> Zabbix</span>
+        </div>
+    </div>
+
+    <section id="services" class="py-24 px-6 relative bg-[#030303]">
+        <div class="max-w-[1200px] mx-auto">
+            <div class="mb-16">
+                <span class="text-neon-green font-mono text-xs tracking-widest font-bold block mb-3" x-text="texts[lang].sol_tag"></span>
+                <h2 class="font-display font-black text-4xl md:text-5xl uppercase text-white" x-html="texts[lang].sol_title"></h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <template x-for="(item, index) in [1, 2, 3, 4, 5, 6]">
+                    <div class="tech-card p-8 group">
+                        <i :class="getIcon(index)" class="text-3xl mb-6 block group-hover:scale-110 transition-transform"></i>
+                        <h3 class="font-display font-bold text-lg text-white mb-3" x-text="texts[lang]['c'+item+'_t']"></h3>
+                        <p class="text-xs text-gray-400 font-medium leading-relaxed" x-text="texts[lang]['c'+item+'_d']"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full bg-[#020202] py-16 border-y border-white/5">
+        <div class="max-w-[1200px] mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div><div class="font-display font-black text-4xl text-neon-green mb-1">99.99%</div><div class="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" x-text="texts[lang].stat1"></div></div>
+            <div><div class="font-display font-black text-4xl text-cyan-bright mb-1">150+</div><div class="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" x-text="texts[lang].stat2"></div></div>
+            <div><div class="font-display font-black text-4xl text-white mb-1" x-text="texts[lang].stat3_num"></div><div class="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" x-text="texts[lang].stat3"></div></div>
+            <div><div class="font-display font-black text-4xl text-white mb-1">10+</div><div class="font-mono text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]" x-text="texts[lang].stat4"></div></div>
+        </div>
+    </div>
+
+    <section id="about" class="py-32 px-6 bg-[#050505] border-t border-white/5">
+        <div class="max-w-[1100px] mx-auto grid md:grid-cols-12 gap-16 items-center">
+            <div class="md:col-span-5 relative group" data-aos="fade-right">
+                <div class="relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 shadow-2xl bg-black">
+                    <img src="/founder-photo.jpg" alt="Kaleb Nunes" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </div>
+                <div class="absolute bottom-5 left-5 bg-black/95 border border-neon-green shadow-lg px-4 py-2.5 rounded-xl flex items-center gap-3 z-20 backdrop-blur-sm">
+                    <div class="bg-neon-green/10 p-2 rounded-full"><i class="fa-solid fa-shield-halved text-neon-green text-lg animate-pulse-slow"></i></div>
+                    <div><div class="font-mono text-[8px] text-gray-400 font-bold uppercase tracking-wider">SAGE CERTIFIED</div><div class="font-display text-[10px] text-white font-black leading-none mt-0.5">HURRICANE ELECTRIC</div></div>
+                </div>
+            </div>
+            <div class="md:col-span-7 space-y-8" data-aos="fade-left">
+                <div>
+                    <span class="font-mono text-neon-green text-xs font-bold tracking-widest mb-2 block" x-text="texts[lang].bio_role"></span>
+                    <h2 class="font-display font-black text-5xl text-white uppercase leading-[0.9] mb-1">KALEB NUNES</h2>
+                    <h2 class="font-display font-bold text-3xl text-gray-600 uppercase leading-[0.9]">DOS SANTOS</h2>
+                </div>
+                <p class="text-xl text-white font-medium italic border-l-4 border-neon-green pl-6 leading-relaxed" x-text="texts[lang].bio_quote"></p>
+                <div class="bg-[#0a0a0a] border border-white/10 p-5 rounded-xl flex items-center gap-5 group cursor-pointer hover:border-cyan-bright transition-all w-fit" @click="modalOpen = true">
+                    <img src="/sage-cert.png" class="w-28 h-auto rounded border border-white/10 opacity-90">
+                    <div>
+                        <div class="font-mono text-[9px] text-cyan-bright font-bold uppercase tracking-wide">CERTIFICAÇÃO:</div>
+                        <div class="font-display font-black text-white text-base">HURRICANE ELECTRIC</div>
+                        <div class="font-mono text-[9px] text-neon-green font-bold mt-1 uppercase tracking-wide">RANK: SAGE BGP CERTIFIED</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 bg-[#030303] border-t border-white/5">
+        <div class="max-w-[1200px] mx-auto">
+            <div class="mb-12 text-center">
+                <span class="text-neon-green font-mono text-xs tracking-widest font-bold block mb-2" x-text="texts[lang].test_tag"></span>
+                <h2 class="font-display font-black text-4xl text-white uppercase" x-html="texts[lang].test_title"></h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <template x-for="(item, index) in [1, 2, 3]">
+                    <div class="bg-[#080808] p-6 border border-white/5 rounded-lg">
+                        <div class="text-neon-green text-[10px] mb-3 flex gap-1"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 text-xs font-medium italic mb-4" x-text="texts[lang]['t'+item+'_msg']"></p>
+                        <div><div class="font-bold text-white text-xs" x-text="texts[lang]['t'+item+'_name']"></div><div class="text-[10px] text-gray-500" x-text="texts[lang]['t'+item+'_role']"></div></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 px-6 bg-black relative border-t border-white/10">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="grid md:grid-cols-2 gap-16">
+                <div>
+                    <span class="font-mono text-neon-green text-xs tracking-widest font-bold block mb-4" x-text="texts[lang].contact_tag"></span>
+                    <h2 class="font-display font-black text-5xl text-white mb-6 uppercase leading-none" x-html="texts[lang].contact_title"></h2>
+                    <p class="text-gray-400 text-base font-medium leading-relaxed" x-text="texts[lang].contact_sub"></p>
+                    <div class="mt-10 space-y-6 font-mono text-sm font-bold">
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <div class="w-8 h-8 bg-[#111] rounded flex items-center justify-center text-cyan-bright"><i class="fa-solid fa-location-dot"></i></div>
+                            <div><div class="text-[10px] text-gray-500 uppercase">Localização</div><div>Balneário Camboriú, SC - Brasil</div></div>
+                        </div>
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <div class="w-8 h-8 bg-[#111] rounded flex items-center justify-center text-cyan-bright"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <div class="text-[10px] text-gray-500 uppercase">E-mail</div>
+                                <div><a href="mailto:kalebdossantos59924@gmail.com" class="hover:text-white transition-colors">kalebdossantos59924@gmail.com</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="space-y-5" @submit.prevent="sendWhatsapp">
+                    <div class="grid grid-cols-2 gap-5">
+                        <input x-model="form.name" type="text" :placeholder="texts[lang].form_name" class="w-full bg-[#0a0a0a] border border-[#222] p-3 text-white focus:border-cyan-bright focus:outline-none font-bold placeholder-gray-600 text-xs rounded">
+                        <input x-model="form.email" type="email" :placeholder="texts[lang].form_email" class="w-full bg-[#0a0a0a] border border-[#222] p-3 text-white focus:border-cyan-bright focus:outline-none font-bold placeholder-gray-600 text-xs rounded">
+                    </div>
+                    <input x-model="form.company" type="text" :placeholder="texts[lang].form_company" class="w-full bg-[#0a0a0a] border border-[#222] p-3 text-white focus:border-cyan-bright focus:outline-none font-bold placeholder-gray-600 text-xs rounded">
+                    <textarea x-model="form.msg" rows="4" :placeholder="texts[lang].form_msg" class="w-full bg-[#0a0a0a] border border-[#222] p-3 text-white focus:border-cyan-bright focus:outline-none font-bold placeholder-gray-600 text-xs rounded"></textarea>
+                    <button type="submit" class="w-full bg-cyan-bright hover:bg-white hover:text-black text-black font-black py-3 uppercase tracking-[0.2em] transition-all shadow-[0_0_20px_rgba(0,229,255,0.2)] text-xs rounded"><i class="fa-solid fa-paper-plane mr-2"></i> <span x-text="texts[lang].form_btn"></span></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-[#020202] pt-16 pb-8">
+        <div class="max-w-[1400px] mx-auto px-8 flex flex-col md:flex-row justify-between items-start gap-10 mb-16">
+            <div class="flex flex-col gap-3 max-w-xs">
+                <div class="font-display font-black text-xl tracking-[0.15em] text-white">KNS <span class="text-cyan-bright">GLOBAL</span></div>
+                <p class="font-mono text-[11px] text-gray-500 font-bold uppercase leading-relaxed tracking-wider">Infraestrutura crítica para empresas que não podem parar.</p>
+            </div>
+            <div class="flex items-center gap-8 self-center md:self-start mt-4 md:mt-0">
+                <div class="flex items-center gap-3 font-mono text-[11px] font-bold text-gray-400 border-r border-white/10 pr-8 tracking-wider"><i class="fa-solid fa-network-wired"></i> IPv6 READY</div>
+                <div class="flex items-center gap-3 font-mono text-[11px] font-bold text-neon-green animate-pulse-slow tracking-wider"><i class="fa-solid fa-shield-halved"></i> SAGE CERTIFIED</div>
+            </div>
+            <div class="flex gap-6 text-gray-500 mt-4 md:mt-0">
+                <a href="https://linkedin.com/in/kalebnunes" target="_blank" class="hover:text-cyan-bright transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                <a href="https://www.youtube.com/@KalebNunesIT" target="_blank" class="hover:text-cyan-bright transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+                <a href="#" class="hover:text-cyan-bright transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+            </div>
+        </div>
+        <div class="text-center border-t border-white/5 pt-8 font-mono text-[10px] text-gray-600 font-bold uppercase tracking-widest">© 2026 KNS CONSULTORIA GLOBAL. Todos os direitos reservados.</div>
+    </footer>
+
+    <div x-show="videoOpen" x-transition.opacity class="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-4 backdrop-blur-lg" @keydown.escape.window="videoOpen = false" x-cloak>
+        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden border border-white/10 shadow-2xl" @click.outside="videoOpen = false">
+            <button @click="videoOpen = false" class="absolute top-4 right-4 text-white hover:text-red-500 transition-colors text-2xl z-50 bg-black/50 rounded-full w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+            <iframe 
+                :src="videoOpen ? 'https://www.youtube.com/embed/T9wvW0EYfE0?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&showinfo=0' : ''" 
+                title="Protocolo 09" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full h-full">
+            </iframe>
+        </div>
+    </div>
+
+    <div x-show="modalOpen" x-transition.opacity class="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-8 backdrop-blur-md" @keydown.escape.window="modalOpen = false" x-cloak>
+        <div class="relative w-auto max-w-4xl" @click.outside="modalOpen = false">
+            <button @click="modalOpen = false" class="absolute -top-12 right-0 text-white hover:text-cyan-bright transition-colors text-3xl"><i class="fa-solid fa-times"></i></button>
+            <img src="/sage-cert.png" class="w-full h-auto max-h-[80vh] object-contain rounded-xl border border-white/20 shadow-2xl">
+        </div>
+    </div>
+
+    <a href="https://wa.me/5547988901616" class="fixed bottom-8 right-8 bg-[#25D366] hover:bg-white hover:text-[#25D366] text-white px-5 py-2.5 rounded-full font-black shadow-[0_0_20px_rgba(37,211,102,0.4)] z-50 flex items-center gap-2 transition-all transform hover:-translate-y-1">
+        <i class="fa-brands fa-whatsapp text-lg"></i> <span class="text-xs uppercase tracking-wider">WhatsApp</span>
+    </a>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appData', () => ({
+                lang: 'pt',
+                modalOpen: false,
+                videoOpen: false,
+                form: { name: '', email: '', company: '', msg: '' },
+
+                sendWhatsapp() {
+                    const text = `*LEAD KNS*\n\n*Nome:* ${this.form.name}\n*Email:* ${this.form.email}\n*Empresa:* ${this.form.company}\n*Msg:* ${this.form.msg}`;
+                    window.open(`https://wa.me/5547988901616?text=${encodeURIComponent(text)}`, '_blank');
+                },
+
+                getIcon(i) {
+                    const icons = [ 'fa-solid fa-eye text-cyan-bright', 'fa-solid fa-bolt text-neon-green', 'fa-solid fa-globe text-purple-500', 'fa-solid fa-lock text-red-500', 'fa-solid fa-server text-blue-500', 'fa-solid fa-cloud text-orange-500' ];
+                    return icons[i] || icons[0];
+                },
+
+                texts: {
+                    pt: {
+                        nav_sol: 'Serviços', nav_about: 'Sobre', nav_contact: 'Contato', nav_cta: 'Solicitar Acesso',
+                        hero_badge: 'PROTOCOLO 09: INFRAESTRUTURA BLINDADA', hero_t1: 'CONTINUIDADE', hero_t2: 'ABSOLUTA.',
+                        hero_desc: 'O Protocolo 09 democratiza a engenharia de elite. <span class="text-white font-bold">Proteção de receita para Micro, Pequenas e Grandes empresas.</span> Zero downtime.', hero_btn: 'Iniciar Diálogo Estratégico',
+                        p9_tag: '// METODOLOGIA EXCLUSIVA', p9_title: 'Protocolo 09', p9_desc: '<strong class="text-white">NOC (Monitoramento) + SOC (Segurança) Integrados.</strong> Nossa metodologia monitora sua infraestrutura 24/7, antecipando falhas.', p9_btn_watch: 'ASSISTIR VÍDEO', p9_btn_sub: 'Entenda o Protocolo 09',
+                        sol_tag: '// SOLUÇÕES ENTERPRISE', sol_title: 'MATRIZ DE <span class="text-cyan-bright">SOLUÇÕES</span>',
+                        c1_t: 'Observabilidade Ativa', c1_d: 'Antecipamos a degradação de serviços críticos através de análise preditiva.',
+                        c2_t: 'Sistemas de Auto-Cura', c2_d: 'Correção automática de falhas. Seu TI dorme tranquilo.',
+                        c3_t: 'Governança BGP/Cloud', c3_d: 'Conectividade de nível global para Provedores e Grandes Redes.',
+                        c4_t: 'Segurança Cibernética', c4_d: 'Proteção contra ataques DDoS e invasões.',
+                        c5_t: 'Engenharia de Dados', c5_d: 'Design de servidores e redundância N+1.',
+                        c6_t: 'Multi-Cloud Strategy', c6_d: 'Integração AWS/Azure otimizando custos.',
+                        stat1: 'Uptime Garantido', stat2: 'Negócios Protegidos', stat3: 'Atuação Nacional', stat3_num: 'BR', stat4: 'Anos de Experiência',
+                        bio_role: '[ CHIEF ENGINEER ]', bio_quote: '"Falhas técnicas ignoram o tamanho da empresa. O Protocolo 09 democratiza a engenharia de elite."',
+                        test_tag: '// DEPOIMENTOS', test_title: 'O QUE DIZEM <span class="text-cyan-bright">NOSSOS CLIENTES</span>',
+                        t1_msg: '"A KNS Consultoria trouxe uma estabilidade sem precedentes para nossa operação. A expertise do Kaleb em BGP foi fundamental para nosso crescimento."', t1_name: 'Roney Cordeiro', t1_role: 'CEO • VivaTech',
+                        t2_msg: '"O monitoramento 24/7 do Protocolo 09 nos deu a tranquilidade que precisávamos. Zero downtime em momentos críticos de safra."', t2_name: 'Roberto Alencar', t2_role: 'Diretor de TI • AgroData Systems',
+                        t3_msg: '"Eficiência técnica que se traduz em proteção de receita. A melhor parceria estratégica que fizemos este ano."', t3_name: 'Fernanda Lins', t3_role: 'Head de Infra • FinX Brasil',
+                        contact_tag: '// COMUNICAÇÃO DIRETA', contact_title: 'PRONTO PARA<br>PROTEGER SEU<br>IMPÉRIO?', contact_sub: 'Entre em contato para uma análise estratégica.',
+                        form_name: 'Nome completo', form_email: 'E-mail corporativo', form_company: 'Empresa', form_msg: 'Descreva seu desafio', form_btn: 'Enviar Mensagem'
+                    },
+                    en: {
+                        nav_sol: 'Services', nav_about: 'About', nav_contact: 'Contact', nav_cta: 'Request Access',
+                        hero_badge: 'PROTOCOL 09: ARMORED INFRASTRUCTURE', hero_t1: 'ABSOLUTE', hero_t2: 'CONTINUITY.',
+                        hero_desc: 'Protocol 09 democratizes elite engineering. <span class="text-white font-bold">Revenue protection for SMBs and Enterprises.</span> Zero downtime.', hero_btn: 'Start Strategic Dialogue',
+                        p9_tag: '// EXCLUSIVE METHODOLOGY', p9_title: 'Protocol 09', p9_desc: '<strong class="text-white">Integrated NOC (Monitoring) + SOC (Security).</strong> Our methodology monitors your infrastructure 24/7, anticipating failures.', p9_btn_watch: 'WATCH VIDEO', p9_btn_sub: 'Understand Protocol 09',
+                        sol_tag: '// ENTERPRISE SOLUTIONS', sol_title: 'SOLUTIONS <span class="text-cyan-bright">MATRIX</span>',
+                        c1_t: 'Active Observability', c1_d: 'We anticipate critical service degradation through predictive analysis.',
+                        c2_t: 'Self-Healing Systems', c2_d: 'Automatic fault correction. Your IT sleeps peacefully.',
+                        c3_t: 'BGP/Cloud Governance', c3_d: 'Global-level connectivity for ISPs and Large Networks.',
+                        c4_t: 'Cyber Security', c4_d: 'Protection against DDoS attacks and intrusions.',
+                        c5_t: 'Data Engineering', c5_d: 'Server design and N+1 redundancy.',
+                        c6_t: 'Multi-Cloud Strategy', c6_d: 'AWS/Azure integration optimizing costs.',
+                        stat1: 'Guaranteed Uptime', stat2: 'Protected Businesses', stat3: 'Nationwide Reach', stat3_num: 'BR', stat4: 'Years Experience',
+                        bio_role: '[ CHIEF ENGINEER ]', bio_quote: '"Technical failures ignore company size. Protocol 09 democratizes elite engineering."',
+                        test_tag: '// TESTIMONIALS', test_title: 'WHAT <span class="text-cyan-bright">CLIENTS SAY</span>',
+                        t1_msg: '"KNS Consultancy brought unprecedented stability to our operation. Kaleb\'s expertise in BGP was fundamental to our growth."', t1_name: 'Roney Cordeiro', t1_role: 'CEO • VivaTech',
+                        t2_msg: '"Protocol 09\'s 24/7 monitoring gave us the peace of mind we needed. Zero downtime during critical harvest times."', t2_name: 'Roberto Alencar', t2_role: 'IT Director • AgroData Systems',
+                        t3_msg: '"Technical efficiency that translates into revenue protection. The best strategic partnership we made this year."', t3_name: 'Fernanda Lins', t3_role: 'Head of Infra • FinX Brasil',
+                        contact_tag: '// DIRECT COMMUNICATION', contact_title: 'READY TO<br>PROTECT YOUR<br>EMPIRE?', contact_sub: 'Contact us for a strategic analysis.',
+                        form_name: 'Full Name', form_email: 'Corporate Email', form_company: 'Company', form_msg: 'Describe your challenge', form_btn: 'Send Message'
+                    },
+                    es: {
+                        nav_sol: 'Services', nav_about: 'Sobre', nav_contact: 'Contacto', nav_cta: 'Solicitar Acceso',
+                        hero_badge: 'PROTOCOLO 09: INFRAESTRUTURA BLINDADA', hero_t1: 'CONTINUIDAD', hero_t2: 'ABSOLUTA.',
+                        hero_desc: 'El Protocolo 09 democratiza la ingeniería de élite. <span class="text-white font-bold">Protección de ingresos para PyMEs y Grandes Empresas.</span> Cero inactividad.', hero_btn: 'Iniciar Diálogo',
+                        p9_tag: '// METODOLOGÍA EXCLUSIVA', p9_title: 'Protocolo 09', p9_desc: '<strong class="text-white">NOC (Monitoreo) + SOC (Seguridad) Integrados.</strong> Nuestra metodología monitorea su infraestructura 24/7.', p9_btn_watch: 'VER VIDEO', p9_btn_sub: 'Entender Protocolo 09',
+                        sol_tag: '// SOLUCIONES EMPRESARIALES', sol_title: 'MATRIZ DE <span class="text-cyan-bright">SOLUCIONES</span>',
+                        c1_t: 'Observabilidad Activa', c1_d: 'Anticipamos la degradación de servicios críticos mediante análisis predictivo.',
+                        c2_t: 'Sistemas de Autocuración', c2_d: 'Corrección automática de fallos. Su TI duerme tranquilo.',
+                        c3_t: 'Gobernanza BGP/Cloud', c3_d: 'Conectividad de nivel global para ISPs y Grandes Redes.',
+                        c4_t: 'Ciberseguridad', c4_d: 'Protección contra ataques DDoS e intrusiones.',
+                        c5_t: 'Ingeniería de Datos', c5_d: 'Diseño de servidores y redundancia N+1.',
+                        c6_t: 'Estrategia Multi-Cloud', c6_d: 'Integración AWS/Azure optimizando costos.',
+                        stat1: 'Uptime Garantido', stat2: 'Negocios Protegidos', stat3: 'Alcance Nacional', stat3_num: 'BR', stat4: 'Años de Experiencia',
+                        bio_role: '[ INGENIERO JEFE ]', bio_quote: '"Las fallas técnicas ignoran el tamaño de la empresa. El Protocolo 09 democratiza la ingeniería de élite."',
+                        test_tag: '// TESTIMONIOS', test_title: 'LO QUE DICEN <span class="text-cyan-bright">NUESTROS CLIENTES</span>',
+                        t1_msg: '"KNS Consultoria trajo una estabilidad sin precedentes a nuestra operación. La experiencia de Kaleb en BGP fue fundamental."', t1_name: 'Roney Cordeiro', t1_role: 'CEO • VivaTech',
+                        t2_msg: '"El monitoreo 24/7 del Protocolo 09 nos dio la tranquilidad que necesitábamos. Cero tiempo de inactividad en momentos críticos."', t2_name: 'Roberto Alencar', t2_role: 'Director TI • AgroData',
+                        t3_msg: '"Eficiencia técnica que se traduce en protección de ingresos. La mejor asociación estratégica que hicimos este año."', t3_name: 'Fernanda Lins', t3_role: 'Jefa de Infra • FinX Brasil',
+                        contact_tag: '// COMUNICACIÓN DIRECTA', contact_title: '¿LISTO PARA<br>PROTEGER SU<br>IMPERIO?', contact_sub: 'Contáctenos para un análisis estratégico.',
+                        form_name: 'Nombre completo', form_email: 'Correo corporativo', form_company: 'Empresa', form_msg: 'Describa su desafío', form_btn: 'Enviar Mensagem'
+                    }
+                }
+            }))
+        });
+        AOS.init({ once: true, offset: 50, duration: 800 });
+    </script>
+</body>
+</html>
